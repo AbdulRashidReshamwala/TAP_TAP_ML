@@ -1,4 +1,10 @@
 .vscode/
 __pycache__/
-static/*
-!.keep
+static/datasets/*
+!static/datasets/.keep
+static/encoders/*
+!static/encoders/.keep
+static/history/*
+!static/history/.keep
+static/models/*
+!static/models/.keep
