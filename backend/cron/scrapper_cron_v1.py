@@ -34,8 +34,7 @@ while 1:
         for c in dataset["classes"]:
             bing_crawler = BingImageCrawler(downloader_cls=MyImageDownloader, downloader_threads=6, storage={
                 'root_dir': f'../static/datasets/{dataset["name"]}'})
-            res = bing_crawler.crawl(keyword=c, filters=None,
-                                     offset=0, max_num=int(dataset["num_images"]))
-            print(res)
+            bing_crawler.crawl(keyword=c, filters=None,
+                               offset=0, max_num=int(dataset["num_images"]))
         conn.update_one({"name": dataset["name"]}, {
                         "$set": {"status": "completed"}})
