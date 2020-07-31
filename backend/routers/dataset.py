@@ -6,6 +6,7 @@ from bson import ObjectId
 from ..db.mongodb import get_database, MongoClient, convert_object_id
 from ..core.config import DATABASE_NAME, DATASET_COLLECTION_NAME
 from fastapi.responses import JSONResponse
+import os
 
 router = APIRouter()
 
@@ -38,7 +39,7 @@ def get_all_dataset(db: MongoClient = Depends(get_database)):
 
 
 @router.get('/status/{status}')
-def get_all_dataset_with_status(status: str, db: MongoClient = Depends(get_database)):
+def get_all_dataset_with_status(status, db: MongoClient = Depends(get_database)):
     query_result = db[DATABASE_NAME][DATASET_COLLECTION_NAME].find(
         {"status": status})
     res = []
@@ -51,5 +52,10 @@ def get_all_dataset_with_status(status: str, db: MongoClient = Depends(get_datab
 def get_dataset_by_name(name: str, db: MongoClient = Depends(get_database)):
     dataset = db[DATABASE_NAME][DATASET_COLLECTION_NAME].find_one({
                                                                   "name": name})
+    if not dataset:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={'msg': 'name not found'})
     dataset = convert_object_id(dataset)
+    if dataset['status'] == 'completed':
+        dataset['images'] = {c: os.listdir(
+            f'backend/static/datasets/{dataset["name"]}/{c}') for c in dataset['classes']}
     return dataset

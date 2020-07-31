@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import CreateDatasetPage from "./Dataset/CreateDatasetPage";
+import CreateModelPage from "./Model/CreateModelPage";
+import ViewAllDatasets from "./Dataset/ViewAllDatasets";
+import ViewAllModels from "./Model/ViewAllModels";
+import EditDataset from "./Dataset/EditDataset";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar>
+        <Switch>
+          <Route path="/dataset/create">
+            <CreateDatasetPage />
+          </Route>
+          <Route path="/dataset/edit">
+            <EditDataset />
+          </Route>
+          <Route path="/dataset" exact>
+            <ViewAllDatasets />
+          </Route>
+          <Route path="/model" exact>
+            <ViewAllModels />
+          </Route>
+          <Route path="/model/create" exact>
+            <CreateModelPage />
+          </Route>
+        </Switch>
+      </Navbar>
+    </Router>
   );
 }
 
